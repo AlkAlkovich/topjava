@@ -30,6 +30,8 @@ CREATE TABLE meals
 
   id INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
   datetime TIMESTAMP,
-  desciption VARCHAR,
-  calories INTEGER
+  description VARCHAR,
+  calories INTEGER,
+  user_id INTEGER,
+  FOREIGN KEY (user_id)REFERENCES users(id)
 );
