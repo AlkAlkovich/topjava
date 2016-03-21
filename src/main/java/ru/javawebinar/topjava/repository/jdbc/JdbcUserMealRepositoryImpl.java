@@ -68,12 +68,14 @@ public class JdbcUserMealRepositoryImpl implements UserMealRepository {
             Number newKey = simpleJdbcInsert.executeAndReturnKey(mapSqlParameterSource);
             UserMeal.setId(newKey.intValue());
         } else {
-            namedParameterJdbcTemplate.update("UPDATE meals SET " +
+            if(namedParameterJdbcTemplate.update("UPDATE meals SET " +
                     "datetime=:dateTime," +
                     "description=:description," +
                     "calories=:calories," +
                     "user_id=:userId " +
-                    "WHERE id=:id", mapSqlParameterSource);
+                    "WHERE id=:id AND user_id=:userId", mapSqlParameterSource)==0){
+                return null;
+            }
         }
         return UserMeal;
     }
