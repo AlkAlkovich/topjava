@@ -25,9 +25,8 @@ public class DataJpaUserMealRepositoryImpl implements UserMealRepository {
     @Override
     @Transactional
     public UserMeal save(UserMeal userMeal, int userId) {
-
+        userMeal.setUser(proxyUserRepository.findOne(userId));
         if (userMeal.isNew()) {
-            userMeal.setUser(proxyUserRepository.getOne(userId));
             return proxyUserMealRepository.save(userMeal);
         } else {
             return get(userMeal.getId(), userId) == null
@@ -40,10 +39,10 @@ public class DataJpaUserMealRepositoryImpl implements UserMealRepository {
     @Override
     @Transactional
     public boolean delete(int id, int userId) {
-        if(get(id,userId).getUser().getId()==userId){
+        if (get(id, userId)!=null) {
             proxyUserMealRepository.delete(id);
             return true;
-        }else {
+        } else {
             return false;
         }
 
