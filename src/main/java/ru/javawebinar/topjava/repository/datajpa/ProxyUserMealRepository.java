@@ -18,8 +18,12 @@ public interface ProxyUserMealRepository extends JpaRepository<UserMeal, Integer
 
     List<UserMeal> findByUserIdOrderByDateTimeDesc(Integer userId);
 
-    List<UserMeal> findByUserIdAndDateTimeBetweenOrderByDateTimeDesc(LocalDateTime startDate, LocalDateTime endDate, int userId);
+    List<UserMeal> findByUserAndDateTimeBetweenOrderByDateTimeDesc(LocalDateTime startDate, LocalDateTime endDate, int userId);
 
+    @Modifying
+    @Query("SELECT m FROM UserMeal m "+
+            "WHERE m.user.id=:userId AND m.dateTime BETWEEN :startDate AND :endDate ORDER BY m.dateTime DESC")
+    List<UserMeal>getBetween(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate,@Param("userId") int userId);
     @Override
     UserMeal save(UserMeal s);
 
